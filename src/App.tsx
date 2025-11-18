@@ -30,7 +30,7 @@ const initialState: FormState = {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [showEventIntro, setShowEventIntro] = useState(false);
+  const [showEventAnnouncement, setShowEventAnnouncement] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -113,11 +113,11 @@ function App() {
 
       clearDraft();
       setIsSuccess(true);
+      // Afficher EventAnnouncement après 2 secondes
       setTimeout(() => {
-        setFormData(initialState);
-        setCurrentStep(0);
         setIsSuccess(false);
-      }, 3000);
+        setShowEventAnnouncement(true);
+      }, 2000);
     } catch (err) {
       console.error('Submission error:', err);
       setError('Une erreur est survenue. Veuillez réessayer.');
@@ -128,15 +128,33 @@ function App() {
 
   const handleLoadingComplete = () => {
     setIsLoading(false);
-    setShowEventIntro(true);
+  };
+
+  // Validation des informations personnelles
+  const isPersonalInfoValid = () => {
+    const { firstName, lastName, phone, roomNumber } = formData.personalInfo;
+    return (
+      firstName.trim() !== '' &&
+      lastName.trim() !== '' &&
+      phone.trim() !== '' &&
+      roomNumber.trim() !== ''
+    );
   };
 
   if (isLoading) {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
-  if (showEventIntro) {
-    return <EventAnnouncement onContinue={() => setShowEventIntro(false)} />;
+  if (showEventAnnouncement) {
+    return (
+      <EventAnnouncement
+        onContinue={() => {
+          setShowEventAnnouncement(false);
+          setFormData(initialState);
+          setCurrentStep(0);
+        }}
+      />
+    );
   }
 
   if (isSuccess) {
@@ -279,6 +297,7 @@ function App() {
             {currentStep < steps.length - 1 ? (
               <button
                 onClick={handleNext}
+                disabled={currentStep === 0 && !isPersonalInfoValid()}
                 className="flex items-center gap-2 px-8 py-3 rounded-lg bg-gradient-to-r from-ucao-blue-600 to-ucao-blue-700 text-white hover:from-ucao-blue-700 hover:to-ucao-blue-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 transform hover:scale-105 font-semibold shadow-lg"
               >
                 Suivant
