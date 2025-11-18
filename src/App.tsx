@@ -9,6 +9,7 @@ import LoadingScreen from './components/LoadingScreen';
 import EventAnnouncement from './components/EventAnnouncement';
 import { FormState } from './types/forms';
 import { saveDraft, loadDraft, clearDraft, hasDraft } from './utils/localStorage';
+import { supabase, isSupabaseConfigured } from './utils/supabaseClient';
 import logo from './image/logo.png';
 
 const initialState: FormState = {
@@ -87,14 +88,27 @@ function App() {
     setError(null);
 
     try {
-      const response = await fetch('/api/submit-form', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error(
+          'Supabase n’est pas configuré. Vérifiez vos variables VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY.'
+        );
+      }
 
-      if (!response.ok) {
-        throw new Error('Erreur lors de la soumission');
+      const { error: supabaseError } = await supabase.from('resident_forms').insert([
+        {
+          first_name: formData.personalInfo.firstName,
+          last_name: formData.personalInfo.lastName,
+          phone: formData.personalInfo.phone,
+          email: formData.personalInfo.email || null,
+          room_number: formData.personalInfo.roomNumber,
+          problems: formData.problems,
+          program_choices: formData.programChoices,
+          submitted_at: new Date().toISOString(),
+        },
+      ]);
+
+      if (supabaseError) {
+        throw supabaseError;
       }
 
       clearDraft();
