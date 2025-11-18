@@ -113,11 +113,6 @@ function App() {
 
       clearDraft();
       setIsSuccess(true);
-      // Afficher EventAnnouncement après 2 secondes
-      setTimeout(() => {
-        setIsSuccess(false);
-        setShowEventAnnouncement(true);
-      }, 2000);
     } catch (err) {
       console.error('Submission error:', err);
       setError('Une erreur est survenue. Veuillez réessayer.');
@@ -177,12 +172,27 @@ function App() {
             </p>
           </div>
 
-          <button
-            onClick={() => window.location.reload()}
-            className="w-full py-3 px-4 bg-gradient-to-r from-ucao-blue-600 to-ucao-red-600 text-white rounded-lg hover:from-ucao-blue-700 hover:to-ucao-red-700 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            Soumettre un autre formulaire
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                setIsSuccess(false);
+                setShowEventAnnouncement(true);
+              }}
+              className="w-full py-3 px-4 bg-gradient-to-r from-ucao-blue-600 via-ucao-red-500 to-ucao-blue-600 text-white rounded-lg hover:from-ucao-blue-700 hover:via-ucao-red-600 hover:to-ucao-blue-700 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              Voir l'annonce de l'événement
+            </button>
+            <button
+              onClick={() => {
+                setFormData(initialState);
+                setCurrentStep(0);
+                setIsSuccess(false);
+              }}
+              className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold transition-all duration-300 transform hover:scale-105 border-2 border-gray-300"
+            >
+              Soumettre un autre formulaire
+            </button>
+          </div>
         </div>
       </div>
     );
