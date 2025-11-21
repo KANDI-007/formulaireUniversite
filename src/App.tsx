@@ -8,6 +8,7 @@ import SummaryPreview from './components/SummaryPreview';
 import ArtistsInterlude from './components/ArtistsInterlude';
 import LoadingScreen from './components/LoadingScreen';
 import EventAnnouncement from './components/EventAnnouncement';
+import AdminDashboard from './components/AdminDashboard';
 import { FormState } from './types/forms';
 import { saveDraft, loadDraft, clearDraft, hasDraft } from './utils/localStorage';
 import { supabase, isSupabaseConfigured } from './utils/supabaseClient';
@@ -51,6 +52,11 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [showDraftNotif, setShowDraftNotif] = useState(false);
   const [showArtistsInterlude, setShowArtistsInterlude] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showAdminLogin, setShowAdminLogin] = useState(false);
+  const [adminEmail, setAdminEmail] = useState('');
+  const [adminPassword, setAdminPassword] = useState('');
+  const [adminError, setAdminError] = useState<string | null>(null);
 
   const steps = ['Infos perso', 'Choix musical', 'Finalisation', 'Résumé'];
 
@@ -199,6 +205,19 @@ function App() {
     setIsLoading(false);
   };
 
+  const handleAdminLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setAdminError(null);
+    if (adminEmail === 'Aime' && adminPassword === 'Aime127@') {
+      setIsAdmin(true);
+      setShowAdminLogin(false);
+      setAdminEmail('');
+      setAdminPassword('');
+    } else {
+      setAdminError('Identifiants incorrects');
+    }
+  };
+
   // Validation des informations personnelles
   const isPersonalInfoValid = () => {
     const { firstName, lastName, phone, institutId } = formData.personalInfo;
@@ -233,6 +252,16 @@ function App() {
           setShowArtistsInterlude(false);
           setCurrentStep(1);
           window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
+    );
+  }
+
+  if (isAdmin) {
+    return (
+      <AdminDashboard
+        onLogout={() => {
+          setIsAdmin(false);
         }}
       />
     );
@@ -303,7 +332,59 @@ function App() {
             Inscription au grand karaoké de l&apos;université
           </p>
           <div className="mt-4 h-1 w-32 bg-gradient-to-r from-ucao-blue-500 to-ucao-red-500 mx-auto rounded-full"></div>
+
+          <button
+            onClick={() => setShowAdminLogin(true)}
+            className="mt-4 text-xs text-ucao-blue-700 hover:text-ucao-red-600 underline underline-offset-2"
+          >
+            Espace administrateur
+          </button>
         </div>
+
+        {showAdminLogin && (
+          <div className="mb-6 max-w-md mx-auto bg-white border border-ucao-blue-200 rounded-2xl p-4 shadow-lg animate-fadeIn">
+            <form onSubmit={handleAdminLogin} className="space-y-3">
+              <p className="text-sm font-semibold text-ucao-blue-900">
+                Connexion administrateur
+              </p>
+              <input
+                type="text"
+                value={adminEmail}
+                onChange={(e) => setAdminEmail(e.target.value)}
+                placeholder="Identifiant"
+                className="w-full input-field border-ucao-blue-200"
+              />
+              <input
+                type="password"
+                value={adminPassword}
+                onChange={(e) => setAdminPassword(e.target.value)}
+                placeholder="Mot de passe"
+                className="w-full input-field border-ucao-blue-200"
+              />
+              {adminError && (
+                <p className="text-xs text-red-600">{adminError}</p>
+              )}
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAdminLogin(false);
+                    setAdminError(null);
+                  }}
+                  className="px-3 py-1.5 text-xs rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-1.5 text-xs rounded-lg bg-ucao-blue-600 text-white hover:bg-ucao-blue-700"
+                >
+                  Connexion
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
 
         {showDraftNotif && (
           <div className="mb-6 bg-gradient-to-r from-ucao-blue-50 to-ucao-red-50 border-2 border-ucao-blue-300 rounded-lg p-4 flex items-start gap-4 animate-slideInDown shadow-lg">
