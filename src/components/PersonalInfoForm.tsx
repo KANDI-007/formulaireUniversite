@@ -1,7 +1,8 @@
-import { User, Mail, Phone, Home } from 'lucide-react';
+import { User, Mail, Phone, GraduationCap } from 'lucide-react';
 import { PersonalInfo } from '../types/forms';
 import { validateForm } from '../utils/validation';
 import { useState } from 'react';
+import { INSTITUTS } from '../constants/instituts';
 
 interface PersonalInfoFormProps {
   data: PersonalInfo;
@@ -21,7 +22,7 @@ export default function PersonalInfoForm({ data, onChange }: PersonalInfoFormPro
       data.lastName,
       data.phone,
       data.email,
-      data.roomNumber
+      data.institutId
     );
     setErrors(validationErrors);
     return Object.keys(validationErrors).length === 0;
@@ -146,24 +147,29 @@ export default function PersonalInfoForm({ data, onChange }: PersonalInfoFormPro
 
       <div>
         <label className="flex items-center text-sm font-semibold text-gray-800 mb-2">
-          <Home className="w-4 h-4 mr-2 text-ucao-blue-600" />
-          Numéro de Chambre <span className="text-ucao-red-500 ml-1">*</span>
+          <GraduationCap className="w-4 h-4 mr-2 text-ucao-blue-600" />
+          Institut <span className="text-ucao-red-500 ml-1">*</span>
         </label>
-        <input
-          type="text"
-          value={data.roomNumber}
-          onChange={(e) => handleChange('roomNumber', e.target.value)}
+        <select
+          value={data.institutId}
+          onChange={(e) => handleChange('institutId', e.target.value)}
           onBlur={handleBlur}
           className={`input-field ${
-            errors.roomNumber
+            errors.institutId
               ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-300'
               : 'border-gray-300 focus:border-ucao-blue-500'
           }`}
-          placeholder="205 ou B-15"
-        />
-        {errors.roomNumber && (
+        >
+          <option value="">Sélectionnez votre institut</option>
+          {INSTITUTS.map((institut) => (
+            <option key={institut.id} value={institut.id}>
+              {institut.sigle} - {institut.nom}
+            </option>
+          ))}
+        </select>
+        {errors.institutId && (
           <p className="text-red-600 text-xs mt-1 flex items-center">
-            ⚠ {errors.roomNumber}
+            ⚠ {errors.institutId}
           </p>
         )}
       </div>

@@ -88,8 +88,8 @@ export default function LoadingScreen({ onComplete }: LoadingScreenProps) {
 
         {/* Titre */}
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 font-serif animate-fadeInUp">
-          <span className="text-ucao-blue-300">Cité</span>{' '}
-          <span className="text-ucao-red-300">Universitaire</span>
+          <span className="text-ucao-blue-300">Université</span>{' '}
+          <span className="text-ucao-red-300">Catholique</span>
         </h1>
 
         {/* Barre de progression */}

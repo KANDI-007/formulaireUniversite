@@ -1,5 +1,5 @@
 import { Sparkles, Film, Clock, Popcorn, Megaphone } from 'lucide-react';
-import imageCine from '../image/imageCiné.png';
+import imageCine from '../image/Karaokeimage7.jpeg';
 import logo from '../image/logo.png';
 import { useEffect, useState } from 'react';
 

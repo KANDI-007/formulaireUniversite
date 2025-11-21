@@ -11,7 +11,7 @@ export const validateForm = (
   lastName: string,
   phone: string,
   email: string,
-  roomNumber: string
+  institutId: number | '' | string
 ): Record<string, string> => {
   const errors: Record<string, string> = {};
 
@@ -22,7 +22,9 @@ export const validateForm = (
   if (email.trim() && !validateEmail(email)) {
     errors.email = 'Email invalide';
   }
-  if (!roomNumber.trim()) errors.roomNumber = 'Le numéro de chambre est requis';
+  if (!institutId || `${institutId}`.trim() === '') {
+    errors.institutId = "L'institut est requis";
+  }
 
   return errors;
 };

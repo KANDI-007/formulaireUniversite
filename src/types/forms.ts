@@ -1,34 +1,34 @@
+// Types adaptés pour le formulaire d'inscription au karaoké UCAO
+
 export interface PersonalInfo {
   firstName: string;
   lastName: string;
   phone: string;
   email: string;
-  roomNumber: string;
+  institutId: number | '';
 }
 
-export interface Problem {
-  category: string;
-  description: string;
-  customCategory?: string;
+export type PerformanceType = 'solo' | 'duo';
+
+export interface SongInfo {
+  searchQuery: string;
+  title: string;
+  artist: string;
+  themeId: number | null;
+  performanceType: PerformanceType;
+  partnerName: string;
+  confidenceLevel: 'Débutant timide' | 'Amateur motivé' | 'Confirmé' | 'Pro du micro';
 }
 
-export interface ProgramChoice {
-  footing: {
-    selected: boolean;
-    canHelp: boolean;
-  };
-  innovation: {
-    selected: boolean;
-    level?: string;
-  };
-  hygiene: {
-    selected: boolean;
-    isTeamLeader: boolean;
-  };
+export interface FinalInfo {
+  preferredSlot: 'debut' | 'milieu' | 'fin' | 'peu_importe' | '';
+  message: string;
+  acceptTerms: boolean;
 }
 
 export interface FormState {
   personalInfo: PersonalInfo;
-  problems: Problem[];
-  programChoices: ProgramChoice;
+  songInfo: SongInfo;
+  finalInfo: FinalInfo;
 }
+
