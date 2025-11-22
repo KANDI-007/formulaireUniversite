@@ -1,4 +1,4 @@
-import { User, Mail, Phone, GraduationCap } from 'lucide-react';
+import { User, Phone, GraduationCap } from 'lucide-react';
 import { PersonalInfo } from '../types/forms';
 import { validateForm } from '../utils/validation';
 import { useState } from 'react';
@@ -92,57 +92,28 @@ export default function PersonalInfoForm({ data, onChange }: PersonalInfoFormPro
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div>
-          <label className="flex items-center text-sm font-semibold text-gray-800 mb-2">
-            <Phone className="w-4 h-4 mr-2 text-ucao-blue-600" />
-            Téléphone (WhatsApp) <span className="text-ucao-red-500 ml-1">*</span>
-          </label>
-          <input
-            type="tel"
-            value={data.phone}
-            onChange={(e) => handleChange('phone', e.target.value)}
-            onBlur={handleBlur}
-            className={`input-field ${
-              errors.phone
-                ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-300'
-                : 'border-gray-300 focus:border-ucao-blue-500'
-            }`}
-            placeholder="+237 6XX XXX XXX"
-          />
-          {errors.phone && (
-            <p className="text-red-600 text-xs mt-1 flex items-center">
-              ⚠ {errors.phone}
-            </p>
-          )}
-        </div>
-
-        <div>
-          <label className="flex items-center text-sm font-semibold text-gray-800 mb-1">
-            <Mail className="w-4 h-4 mr-2 text-ucao-blue-600" />
-            Email <span className="text-gray-500 text-xs font-normal ml-2">(optionnel)</span>
-          </label>
-          <input
-            type="email"
-            value={data.email}
-            onChange={(e) => handleChange('email', e.target.value)}
-            onBlur={handleBlur}
-            className={`input-field ${
-              errors.email
-                ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-300'
-                : 'border-gray-300 focus:border-ucao-blue-500'
-            }`}
-            placeholder="jean.dupont@email.com"
-          />
-          {errors.email && (
-            <p className="text-red-600 text-xs mt-1 flex items-center">
-              ⚠ {errors.email}
-            </p>
-          )}
-          {!errors.email && (
-            <p className="text-xs text-gray-500 mt-1">Nous contacterons plutôt par téléphone.</p>
-          )}
-        </div>
+      <div>
+        <label className="flex items-center text-sm font-semibold text-gray-800 mb-2">
+          <Phone className="w-4 h-4 mr-2 text-ucao-blue-600" />
+          Téléphone (WhatsApp) <span className="text-ucao-red-500 ml-1">*</span>
+        </label>
+        <input
+          type="tel"
+          value={data.phone}
+          onChange={(e) => handleChange('phone', e.target.value)}
+          onBlur={handleBlur}
+          className={`input-field ${
+            errors.phone
+              ? 'border-red-500 bg-red-50 focus:border-red-500 focus:ring-red-300'
+              : 'border-gray-300 focus:border-ucao-blue-500'
+          }`}
+          placeholder="+237 6XX XXX XXX"
+        />
+        {errors.phone && (
+          <p className="text-red-600 text-xs mt-1 flex items-center">
+            ⚠ {errors.phone}
+          </p>
+        )}
       </div>
 
       <div>

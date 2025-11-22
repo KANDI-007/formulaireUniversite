@@ -5,9 +5,8 @@ import PersonalInfoForm from './components/PersonalInfoForm';
 import KaraokeSongForm from './components/KaraokeSongForm';
 import KaraokeFinalForm from './components/KaraokeFinalForm';
 import SummaryPreview from './components/SummaryPreview';
-import ArtistsInterlude from './components/ArtistsInterlude';
+import MusicCategoriesInterlude from './components/MusicCategoriesInterlude';
 import LoadingScreen from './components/LoadingScreen';
-import EventAnnouncement from './components/EventAnnouncement';
 import AdminDashboard from './components/AdminDashboard';
 import { FormState } from './types/forms';
 import { saveDraft, loadDraft, clearDraft, hasDraft } from './utils/localStorage';
@@ -44,7 +43,6 @@ const initialState: FormState = {
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
-  const [showEventAnnouncement, setShowEventAnnouncement] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormState>(initialState);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -233,22 +231,15 @@ function App() {
     return <LoadingScreen onComplete={handleLoadingComplete} />;
   }
 
-  if (showEventAnnouncement) {
-    return (
-      <EventAnnouncement
-        onContinue={() => {
-          setShowEventAnnouncement(false);
-          setFormData(initialState);
-          setCurrentStep(0);
-        }}
-      />
-    );
-  }
-
   if (showArtistsInterlude) {
     return (
-      <ArtistsInterlude
-        onContinue={() => {
+      <MusicCategoriesInterlude
+        onCategorySelect={() => {
+          setShowArtistsInterlude(false);
+          setCurrentStep(1);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onSkip={() => {
           setShowArtistsInterlude(false);
           setCurrentStep(1);
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -287,23 +278,14 @@ function App() {
             </p>
           </div>
 
-          <div className="space-y-3">
-            <button
-              onClick={() => {
-                setIsSuccess(false);
-                setShowEventAnnouncement(true);
-              }}
-              className="w-full py-3 px-4 bg-gradient-to-r from-ucao-blue-600 via-ucao-red-500 to-ucao-blue-600 text-white rounded-lg hover:from-ucao-blue-700 hover:via-ucao-red-600 hover:to-ucao-blue-700 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-            >
-              Voir l'annonce de l'événement
-            </button>
+          <div>
             <button
               onClick={() => {
                 setFormData(initialState);
                 setCurrentStep(0);
                 setIsSuccess(false);
               }}
-              className="w-full py-3 px-4 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 font-semibold transition-all duration-300 transform hover:scale-105 border-2 border-gray-300"
+              className="w-full py-3 px-4 bg-gradient-to-r from-ucao-blue-600 via-ucao-red-500 to-ucao-blue-600 text-white rounded-lg hover:from-ucao-blue-700 hover:via-ucao-red-600 hover:to-ucao-blue-700 font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               Soumettre un autre formulaire
             </button>

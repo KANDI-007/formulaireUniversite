@@ -3,7 +3,6 @@ import { SongInfo } from '../types/forms';
 
 import img80s from '../image/imageTheme/annee 80.jpeg';
 import imgAfro from '../image/imageTheme/Afro vibes.jpeg';
-import imgComedie from '../image/imageTheme/comédi musical.jpeg';
 import imgGospel from '../image/imageTheme/gospel.jpeg';
 import imgHits from '../image/imageTheme/hit du moment.jpeg';
 import imgClassique from '../image/imageTheme/classique.jpeg';
@@ -67,7 +66,6 @@ export default function KaraokeSongForm({ data, onChange }: KaraokeSongFormProps
             {[
               { id: 1, label: 'Années 80/90/2000', emoji: '🎸', image: img80s },
               { id: 2, label: 'Afro Vibes', emoji: '🌍', image: imgAfro },
-              { id: 3, label: 'Comédie Musicale', emoji: '🎭', image: imgComedie },
               { id: 4, label: 'Gospel/Louange', emoji: '🙏', image: imgGospel },
               { id: 5, label: 'Hits du moment', emoji: '🔥', image: imgHits },
               { id: 6, label: 'Classiques intemporels', emoji: '🎹', image: imgClassique },

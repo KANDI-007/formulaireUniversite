@@ -15,8 +15,8 @@ export default function KaraokeFinalForm({ data, onChange }: KaraokeFinalFormPro
     <div className="space-y-6 animate-fadeIn">
       <div className="mb-8 animate-slideInRight">
         <h2 className="text-3xl font-bold mb-2 font-display">
-          <span className="text-ucao-blue-700">Finalisation</span>{' '}
-          <span className="text-ucao-red-700">de ton inscription</span>
+          <span className="text-ucao-blue-700">Finalise</span>{' '}
+          <span className="text-ucao-red-700">ton inscription</span>
         </h2>
         <p className="text-gray-600 font-medium">
           Choisis ton créneau préféré et ajoute une dédicace si tu le souhaites.

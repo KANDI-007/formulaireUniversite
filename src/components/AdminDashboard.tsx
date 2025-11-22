@@ -78,6 +78,18 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
     void fetchParticipants();
   }, []);
 
+  const getThemeName = (themeId: number | null): string => {
+    const themes: Record<number, string> = {
+      1: 'Années 80/90/2000',
+      2: 'Afro Vibes',
+      3: 'Comédie Musicale',
+      4: 'Gospel/Louange',
+      5: 'Hits du moment',
+      6: 'Classiques intemporels',
+    };
+    return themeId ? themes[themeId] || 'Non spécifié' : 'Non spécifié';
+  };
+
   const filtered = participants.filter((p) => {
     const q = search.toLowerCase();
     if (!q) return true;
@@ -215,6 +227,11 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                   </span>
                   <span>{p.niveau_confiance}</span>
                 </div>
+                {p.theme_id && (
+                  <div className="mt-2 text-[11px] text-gray-600 font-medium">
+                    🎵 Thème: {getThemeName(p.theme_id)}
+                  </div>
+                )}
 
                 <div className="mt-2 text-[10px] text-gray-400">
                   Inscrit le {new Date(p.date_inscription).toLocaleString()}
@@ -233,6 +250,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                 <th className="px-3 py-2">Nom</th>
                 <th className="px-3 py-2">Téléphone</th>
                 <th className="px-3 py-2">Chanson</th>
+                <th className="px-3 py-2">Thème</th>
                 <th className="px-3 py-2">Type</th>
                 <th className="px-3 py-2">Confiance</th>
                 <th className="px-3 py-2">Présent</th>
@@ -243,7 +261,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
               {loading ? (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="px-3 py-10 text-center text-gray-500"
                   >
                     Chargement des participants...
@@ -252,7 +270,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
               ) : filtered.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={8}
+                    colSpan={9}
                     className="px-3 py-10 text-center text-gray-500"
                   >
                     Aucun participant trouvé.
@@ -285,6 +303,9 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
                       <div className="text-xs text-gray-500">
                         {p.chanson_artiste}
                       </div>
+                    </td>
+                    <td className="px-3 py-2 text-xs text-gray-700">
+                      {getThemeName(p.theme_id)}
                     </td>
                     <td className="px-3 py-2 text-xs text-gray-700">
                       {p.type_chanson === 'solo' ? '🎤 Solo' : '👥 Duo'}
