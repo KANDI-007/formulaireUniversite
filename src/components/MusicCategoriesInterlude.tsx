@@ -88,11 +88,11 @@ export default function MusicCategoriesInterlude({
       {/* Écran principal des catégories */}
       {!showImageTransition && (
         <div
-          className={`fixed inset-0 z-40 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white flex flex-col transition-all duration-700 ${
+          className={`fixed inset-0 z-40 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white flex flex-col transition-all duration-700 overflow-hidden ${
             selectedCategory ? 'scale-105 opacity-0' : 'scale-100 opacity-100'
           }`}
         >
-          <div className="px-4 pt-6 pb-3 flex items-center justify-between">
+          <div className="px-4 pt-6 pb-3 flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">
               <Sparkles className="w-5 h-5 text-yellow-300 animate-pulse" />
               <span className="text-xs uppercase tracking-[0.3em] text-white/70">
@@ -105,8 +105,8 @@ export default function MusicCategoriesInterlude({
             </div>
           </div>
 
-          <div className="flex-1 flex items-center justify-center px-4 pb-24">
-            <div className="w-full max-w-4xl">
+          <div className="flex-1 overflow-y-auto px-4 py-6">
+            <div className="w-full max-w-4xl mx-auto">
               <div className="text-center mb-8 animate-fadeInUp">
                 <h2 className="text-3xl md:text-5xl font-bold font-display mb-3 drop-shadow-lg">
                   Quelle musique
@@ -120,7 +120,7 @@ export default function MusicCategoriesInterlude({
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 mb-8">
                 {CATEGORIES.map((category, index) => (
                   <button
                     key={category.name}
@@ -146,7 +146,7 @@ export default function MusicCategoriesInterlude({
             </div>
           </div>
 
-          <div className="absolute inset-x-0 bottom-0 pb-6 pt-4 px-4 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent flex justify-center">
+          <div className="px-4 pb-6 pt-4 bg-gradient-to-t from-slate-900 via-slate-900/80 to-transparent flex justify-center flex-shrink-0">
             <button
               onClick={onSkip}
               className="px-6 py-2 rounded-full bg-white/10 border border-white/40 backdrop-blur-md text-sm font-semibold flex items-center gap-2 hover:bg-white/20 transition-all duration-300"
