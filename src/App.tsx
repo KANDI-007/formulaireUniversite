@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, Send, SaveIcon, CheckCircle } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Send, SaveIcon, CheckCircle, Play, Pause, Volume2, VolumeX } from 'lucide-react';
 import StepIndicator from './components/StepIndicator';
 import PersonalInfoForm from './components/PersonalInfoForm';
 import KaraokeSongForm from './components/KaraokeSongForm';
@@ -16,6 +16,7 @@ import stepImage1 from './image/Karaokeimage3.jpeg';
 import stepImage2 from './image/Karaokeimage1.jpeg';
 import stepImage3 from './image/Karaokeimage5.jpeg';
 import stepImage4 from './image/Karaokeimage8.jpeg';
+import bgLocal from './chansons/Denden_-_Padtal__Clip_Officiel_(128k).mp3';
 
 const initialState: FormState = {
   personalInfo: {
@@ -55,6 +56,55 @@ function App() {
   const [adminEmail, setAdminEmail] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
   const [adminError, setAdminError] = useState<string | null>(null);
+
+  // Background music (use env var if set, otherwise fallback to local asset)
+  const musicUrlEnv = import.meta.env.VITE_BACKGROUND_MUSIC_URL as string | undefined;
+  const musicUrl = musicUrlEnv || bgLocal;
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const [isMutedMusic, setIsMutedMusic] = useState<boolean>(() => {
+    try {
+      const saved = localStorage.getItem('bg_music_muted');
+      return saved ? JSON.parse(saved) : true;
+    } catch {
+      return true;
+    }
+  });
+
+  useEffect(() => {
+    if (!musicUrl || !audioRef.current) return;
+    audioRef.current.loop = true;
+    audioRef.current.muted = isMutedMusic;
+    const p = audioRef.current.play();
+    if (p && typeof p.then === 'function') {
+      p.then(() => setIsPlayingMusic(true)).catch(() => setIsPlayingMusic(false));
+    }
+  }, [musicUrl, isMutedMusic]);
+
+  const toggleMusicPlay = async () => {
+    if (!audioRef.current) return;
+    try {
+      if (isPlayingMusic) {
+        audioRef.current.pause();
+        setIsPlayingMusic(false);
+      } else {
+        await audioRef.current.play();
+        setIsPlayingMusic(true);
+      }
+    } catch (e) {
+      setIsPlayingMusic(false);
+    }
+  };
+
+  const toggleMusicMute = () => {
+    if (!audioRef.current) return;
+    const next = !isMutedMusic;
+    audioRef.current.muted = next;
+    setIsMutedMusic(next);
+    try {
+      localStorage.setItem('bg_music_muted', JSON.stringify(next));
+    } catch {}
+  };
 
   const steps = ['Infos perso', 'Choix musical', 'Finalisation', 'Résumé'];
 
@@ -297,6 +347,28 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-ucao-blue-50 via-white to-ucao-red-50 py-8 px-4">
+      {/* Background audio element + controls */}
+      {musicUrl && (
+        <>
+          <audio ref={audioRef} src={musicUrl} preload="auto" />
+          <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg">
+            <button
+              onClick={toggleMusicPlay}
+              aria-label={isPlayingMusic ? 'Pause music' : 'Play music'}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              {isPlayingMusic ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+            </button>
+            <button
+              onClick={toggleMusicMute}
+              aria-label={isMutedMusic ? 'Unmute music' : 'Mute music'}
+              className="p-2 rounded-full hover:bg-gray-100"
+            >
+              {isMutedMusic ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
+          </div>
+        </>
+      )}
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-10 animate-fadeInUp">
           <div className="flex justify-center mb-4">
