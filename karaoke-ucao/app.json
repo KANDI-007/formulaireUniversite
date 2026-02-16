@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Karaoké UCAO",
+    "slug": "karaoke-ucao",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/logo-ucao.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/images/logo-ucao.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#003D82"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/logo-ucao.png",
+        "backgroundColor": "#003D82"
+      },
+      "permissions": []
+    },
+    "plugins": [
+      "expo-router",
+      "expo-notifications",
+      "expo-print"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "00000000-0000-0000-0000-000000000000"
+      }
+    }
+  }
+}
+
+

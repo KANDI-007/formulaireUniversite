@@ -307,11 +307,11 @@ function App() {
             />
           </div>
           <h1 className="text-4xl md:text-5xl font-bold mb-2 font-display">
-            <span className="text-ucao-blue-700">Karaoké</span>{' '}
-            <span className="text-ucao-red-700">UCAO 2025</span>
+            <span className="text-ucao-blue-700">Semaine de l'étudiant</span>{' '}
+            <span className="text-ucao-red-700">2026</span>
           </h1>
           <p className="text-gray-700 text-lg font-medium">
-            Inscription au grand karaoké de l&apos;université
+            Inscription pour le karaoké 2026
           </p>
           <div className="mt-4 h-1 w-32 bg-gradient-to-r from-ucao-blue-500 to-ucao-red-500 mx-auto rounded-full"></div>
 
@@ -474,7 +474,7 @@ function App() {
                     </p>
                   </div>
                   <div className="mt-6 text-xs text-white/60">
-                    <p>Karaoké UCAO 2025 • Université Catholique</p>
+                    <p>Semaine de l'étudiant 2026 • Université Catholique</p>
                   </div>
                 </div>
               </div>

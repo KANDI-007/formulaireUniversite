@@ -1,0 +1,47 @@
+{
+  "name": "karaoke-ucao",
+  "version": "1.0.0",
+  "private": true,
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web"
+  },
+  "dependencies": {
+    "expo": "~50.0.0",
+    "expo-router": "~3.4.0",
+    "react": "18.2.0",
+    "react-native": "0.73.0",
+    "@supabase/supabase-js": "^2.39.0",
+    "@react-native-async-storage/async-storage": "1.21.0",
+    "react-native-url-polyfill": "^2.0.0",
+    "expo-linear-gradient": "~13.0.2",
+    "expo-blur": "~13.0.2",
+    "expo-haptics": "~13.0.1",
+    "expo-sharing": "~12.0.1",
+    "expo-file-system": "~16.0.6",
+    "expo-print": "~13.0.0",
+    "expo-notifications": "~0.27.0",
+    "react-native-qrcode-svg": "^6.3.0",
+    "react-native-svg": "14.1.0",
+    "victory-native": "^36.9.2",
+    "lottie-react-native": "6.5.1",
+    "react-native-confetti-cannon": "^1.5.2",
+    "react-native-reanimated": "~3.6.0",
+    "react-native-gesture-handler": "~2.14.0",
+    "react-hook-form": "^7.49.0",
+    "zod": "^3.22.4",
+    "@hookform/resolvers": "^3.3.3",
+    "date-fns": "^3.0.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@types/react": "~18.2.0",
+    "typescript": "^5.3.0"
+  }
+}
+
+
