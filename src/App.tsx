@@ -422,6 +422,16 @@ function App() {
               {isMutedMusic ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
           </div>
+          {/* Animated finger pointer to draw attention to the play button when audio is not playing */}
+          {!isPlayingMusic && (
+            <div className="finger-pointer fixed bottom-20 right-6 z-50 pointer-events-none">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-ucao-blue-600">
+                <path d="M13 3v6a1 1 0 0 0 2 0V2a1 1 0 0 0-2 0v1z" fill="currentColor" />
+                <path d="M6 9v6a6 6 0 0 0 12 0v-1a3 3 0 0 0-6 0v4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 12l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          )}
         </>
       )}
       <div className="max-w-4xl mx-auto">
