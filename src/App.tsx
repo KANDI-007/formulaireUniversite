@@ -65,11 +65,13 @@ function App() {
   const [isMutedMusic, setIsMutedMusic] = useState<boolean>(() => {
     try {
       const saved = localStorage.getItem('bg_music_muted');
-      return saved ? JSON.parse(saved) : true;
+      // default to false (try to play with sound). If blocked, we'll show prompt.
+      return saved ? JSON.parse(saved) : false;
     } catch {
-      return true;
+      return false;
     }
   });
+  const [showPlayPrompt, setShowPlayPrompt] = useState(false);
 
   useEffect(() => {
     if (!musicUrl || !audioRef.current) return;
@@ -77,7 +79,16 @@ function App() {
     audioRef.current.muted = isMutedMusic;
     const p = audioRef.current.play();
     if (p && typeof p.then === 'function') {
-      p.then(() => setIsPlayingMusic(true)).catch(() => setIsPlayingMusic(false));
+      p
+        .then(() => {
+          setIsPlayingMusic(true);
+          setShowPlayPrompt(false);
+        })
+        .catch(() => {
+          // Autoplay with sound blocked by browser; show prompt for user gesture
+          setIsPlayingMusic(false);
+          setShowPlayPrompt(true);
+        });
     }
   }, [musicUrl, isMutedMusic]);
 
@@ -104,6 +115,23 @@ function App() {
     try {
       localStorage.setItem('bg_music_muted', JSON.stringify(next));
     } catch {}
+  };
+
+  const handlePlayPrompt = async () => {
+    if (!audioRef.current) return;
+    try {
+      audioRef.current.muted = false;
+      setIsMutedMusic(false);
+      await audioRef.current.play();
+      setIsPlayingMusic(true);
+      setShowPlayPrompt(false);
+      try {
+        localStorage.setItem('bg_music_muted', JSON.stringify(false));
+      } catch {}
+    } catch {
+      // still blocked, keep prompt visible
+      setShowPlayPrompt(true);
+    }
   };
 
   const steps = ['Infos perso', 'Choix musical', 'Finalisation', 'Résumé'];
@@ -351,6 +379,26 @@ function App() {
       {musicUrl && (
         <>
           <audio ref={audioRef} src={musicUrl} preload="auto" />
+
+          {/* Play prompt overlay shown when browser blocks autoplay with sound */}
+          {showPlayPrompt && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+              <div className="bg-white rounded-xl p-6 text-center shadow-lg max-w-sm mx-4">
+                <p className="mb-4 font-semibold">Activer le son</p>
+                <p className="text-sm text-gray-600 mb-4">Cliquez pour autoriser la lecture audio avec le son.</p>
+                <div className="flex justify-center">
+                  <button
+                    onClick={handlePlayPrompt}
+                    className="px-5 py-2 bg-ucao-blue-600 text-white rounded-lg flex items-center gap-2"
+                  >
+                    <Play className="w-4 h-4" />
+                    Activer le son
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 bg-white/80 backdrop-blur-sm rounded-full p-2 shadow-lg">
             <button
               onClick={toggleMusicPlay}
