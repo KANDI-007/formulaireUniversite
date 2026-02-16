@@ -16,7 +16,7 @@ import stepImage1 from './image/Karaokeimage3.jpeg';
 import stepImage2 from './image/Karaokeimage1.jpeg';
 import stepImage3 from './image/Karaokeimage5.jpeg';
 import stepImage4 from './image/Karaokeimage8.jpeg';
-import bgLocal from './chansons/Denden_-_Padtal__Clip_Officiel_(128k).mp3';
+import bgLocal from './chansons/BabyDaiz_-_ALLONSY__Official_Video_(256k).mp3';
 
 const initialState: FormState = {
   personalInfo: {
@@ -76,7 +76,14 @@ function App() {
   useEffect(() => {
     if (!musicUrl || !audioRef.current) return;
     audioRef.current.loop = true;
-    audioRef.current.muted = isMutedMusic;
+    // Try to play with sound enabled. Browsers may still block autoplay with audio.
+    try {
+      audioRef.current.muted = false;
+    } catch {}
+    audioRef.current.autoplay = true as any;
+    try {
+      (audioRef.current as HTMLAudioElement & { playsInline?: boolean }).playsInline = true;
+    } catch {}
     const p = audioRef.current.play();
     if (p && typeof p.then === 'function') {
       p
