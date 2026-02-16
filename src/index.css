@@ -82,17 +82,17 @@ select:focus {
   @apply ring-2 ring-ucao-blue-300;
 }
 
-@keyframes finger-bob {
-  0% { transform: translateY(0) rotate(-10deg); }
-  50% { transform: translateY(-12px) rotate(6deg); }
-  100% { transform: translateY(0) rotate(-10deg); }
+@keyframes arrow-bounce {
+  0% { transform: translateY(0); opacity: 0.95; }
+  50% { transform: translateY(-10px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 0.95; }
 }
 
-.finger-pointer svg {
-  transform-origin: bottom right;
-  animation: finger-bob 1.2s ease-in-out infinite;
+.pointer-arrow svg {
+  transform-origin: center;
+  animation: arrow-bounce 1s ease-in-out infinite;
 }
 
-.finger-pointer {
+.pointer-arrow {
   -webkit-tap-highlight-color: transparent;
 }

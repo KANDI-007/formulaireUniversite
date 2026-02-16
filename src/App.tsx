@@ -76,7 +76,6 @@ function App() {
   useEffect(() => {
     if (!musicUrl || !audioRef.current) return;
     audioRef.current.loop = true;
-    // Try to play with sound enabled. Browsers may still block autoplay with audio.
     try {
       audioRef.current.muted = false;
     } catch {}
@@ -98,6 +97,44 @@ function App() {
         });
     }
   }, [musicUrl, isMutedMusic]);
+
+  // Ensure audio element is created once and persists across React renders/navigation
+  useEffect(() => {
+    if (audioRef.current) return;
+    let audioEl = document.getElementById('global-bg-audio') as HTMLAudioElement | null;
+    if (!audioEl) {
+      audioEl = document.createElement('audio');
+      audioEl.id = 'global-bg-audio';
+      audioEl.src = musicUrl || '';
+      audioEl.preload = 'auto';
+      audioEl.loop = true;
+      audioEl.autoplay = true;
+      try { (audioEl as any).playsInline = true; } catch {}
+      document.body.appendChild(audioEl);
+    } else {
+      // update src if needed
+      if (musicUrl && audioEl.src.indexOf(musicUrl) === -1) audioEl.src = musicUrl;
+    }
+    audioRef.current = audioEl;
+
+    const onPlay = () => setIsPlayingMusic(true);
+    const onPause = () => setIsPlayingMusic(false);
+    audioEl.addEventListener('play', onPlay);
+    audioEl.addEventListener('pause', onPause);
+
+    // Try to start playback
+    audioEl.muted = false;
+    const p = audioEl.play();
+    if (p && typeof p.then === 'function') {
+      p.catch(() => setShowPlayPrompt(true));
+    }
+
+    return () => {
+      audioEl.removeEventListener('play', onPlay);
+      audioEl.removeEventListener('pause', onPause);
+      // keep the audio element so it persists across app remounts/deploys
+    };
+  }, []);
 
   const toggleMusicPlay = async () => {
     if (!audioRef.current) return;
@@ -424,11 +461,10 @@ function App() {
           </div>
           {/* Animated finger pointer to draw attention to the play button when audio is not playing */}
           {!isPlayingMusic && (
-            <div className="finger-pointer fixed bottom-20 right-6 z-50 pointer-events-none">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-ucao-blue-600">
-                <path d="M13 3v6a1 1 0 0 0 2 0V2a1 1 0 0 0-2 0v1z" fill="currentColor" />
-                <path d="M6 9v6a6 6 0 0 0 12 0v-1a3 3 0 0 0-6 0v4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M4 12l4-4 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            <div className="pointer-arrow fixed bottom-20 right-6 z-50 pointer-events-none">
+              <svg width="56" height="56" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-ucao-blue-600">
+                <path d="M12 2v14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M19 9l-7 7-7-7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
           )}
